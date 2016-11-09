@@ -1,0 +1,26 @@
+---
+output: html_document
+---
+
+### Modelisation de la population
+
+```{r, include=FALSE}
+lib<-list("rgdal", "sp", "raster", "knitr", "tmap", "rgeos")
+lapply(lib, library, character.only=TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=8, fig.width=9}
+
+#chargement des couches
+haute_vienne<-readOGR(dsn="shp", layer="HV", verbose=F)
+communes<-readOGR(dsn="shp", layer="HV1", verbose=F)
+bati<-readOGR(dsn="shp", layer="bati1", verbose=F)
+
+
+  carte<-tm_shape(haute_vienne)+tm_fill()+
+  qtm(communes)+
+  tm_shape(bati)+tm_fill("black")
+  
+tmap_mode("view")
+carte+tm_view(alpha = 1, basemaps =FALSE)
+```
