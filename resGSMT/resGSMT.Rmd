@@ -1,0 +1,49 @@
+---
+title: "GSMT"
+output: 
+  flexdashboard::flex_dashboard
+---
+
+--------------------------------------------------------------------
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+###
+
+```{r}
+library(ggplot2)
+load("/home/leleu/Documents/CEM/limousin0012/expAttObs/resultat/GSMT.RData")
+graphe<-ggplot(resGSM, aes(x=Exposition, y=sir))+
+  geom_errorbar(width=0.5, aes(ymin=inf, ymax=sup) )+
+  geom_point(size=3, shape=21, fill="white")+
+  ggtitle("SIR selon le temps-exposition au réseau GSM")+
+  ylab("SIR")+
+  xlab("Exposition en V/m années")
+graphe
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### SLA et temps-exposition au réseau GSM
+
+```{r}
+library(knitr)
+tableau<-function(df){
+  tab<-data.frame(Exposition=row.names(df), Observés=df$Observe, Attendus=round(df$Attendus,2),SIR=round(df$sir,2), inf=round(df$inf,2), sup=round(df$sup,2))
+  tab
+}
+kable(tableau(resGSM), row.name=FALSE)
+```
+
+### Régression de poisson selon le temps-exposition au réseau GSM
+
+```{r, results='asis'}
+res<-broom::tidy(regGSM)
+kable(res, digits=2)
+
+```

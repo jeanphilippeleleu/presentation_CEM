@@ -1,0 +1,27 @@
+---
+output: html_document
+---
+
+```{r, echo=FALSE, message=FALSE}
+library(dygraphs)
+library(xts)
+
+antenne <- as.xts(ts(start = c(1991), end=c(2009),
+  data = c(6,6,88,200,657,903,1381,3163,3587,4511,4834,4978,5375,6381,7246,7911,8508,9128,9538)))
+
+incidence <- as.xts(ts(start =c(2000), delta=1,
+  data = c(2.801073, 1.813654,2.223532,2.492246,3.172278,4.259389,4.106242,3.390506,2.970472,4.318011,3.373446,3.239238,4.466908)))
+
+periode<-cbind(antenne, incidence)
+
+dygraph(periode, main="Periodes de l'étude") %>%
+  dyAxis("x", rangePad=c(20)) %>%
+  dyAxis("y", label = "Antennes") %>%
+  dyAxis("y2", label = "Incidence", independentTicks = TRUE) %>%
+  dySeries("..1", axis = 'y', label="antenne") %>%
+  dySeries("..2", axis = 'y2', label="incidence")
+  
+ 
+  
+
+```
